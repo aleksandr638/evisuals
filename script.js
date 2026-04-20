@@ -26,7 +26,7 @@ function startCinematicPreloader() {
     }
     strip.innerHTML = numbersHTML;
 
-    // Запускаем GSAP таймлайн
+    // Запускаем GSAP таймлайн (только прокрутка до 100, без исчезновения)
     const tl = gsap.timeline({
         onComplete: () => {
             isAnimationFinished = true;
@@ -34,19 +34,13 @@ function startCinematicPreloader() {
         }
     });
 
-    // Плавная прокрутка до 100 (занимает 3.5 секунды)
+    // Плавная прокрутка до 100 (3.5 секунды)
     tl.to(strip, {
         y: "-100em", 
         duration: 3.5, 
         ease: "power4.inOut" 
-    })
-    // Мягкое растворение цифры 100%
-    .to('.preloader-counter', {
-        y: -30, 
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.out"
-    }, "+=0.2");
+    });
+    // ❌ Удаляем анимацию исчезновения .preloader-counter
 }
 
 // --- ЗАГРУЗКА ХЕДЕРА И ФУТЕРА ---
