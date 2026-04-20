@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кейс: theFirst | ERA.VISUALS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Подключаем общий файл стилей -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ПЛЕЙСХОЛДЕР ХЕДЕРА -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Шапка проекта -->
+        <section class="project-hero">
+            <div class="container">
+                
+                <!-- КНОПКА ВОЗВРАТА -->
+                <a href="index.html#portfolio" class="back-link gsap-reveal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Назад к портфолио
+                </a>
+
+                <h1 class="project-title gsap-reveal">Сайт для theFirst</h1>
+            </div>
+        </section>
+
+        <!-- ГЛАВНЫЙ ВИЗУАЛ -->
+        <section class="section no-border-top">
+            <div class="container">
+                <div class="module-web gsap-reveal">
+                    <!-- Левая часть: Картинка -->
+                    <img src="src/cover-thefirst.png" alt="Превью сайта" class="module-web-img">
+                    
+                    <!-- Правая часть: Описание и Кнопка -->
+                    <div class="module-web-info">
+                        <h4>О проекте</h4>
+                        <p>Мы создали премиальный сайт для пространства красоты в&nbsp;г.&nbsp;Сочи, который подчеркивает уникальность бренда и&nbsp;формирует доверие с&nbsp;первых секунд. Интуитивная навигация, удобная онлайн-запись и&nbsp;акцент на&nbsp;премиальные услуги делают взаимодействие с&nbsp;сайтом комфортным и&nbsp;эффективным.</p>
+                        <a href="project-beauty.html" target="_blank" rel="noopener noreferrer" class="btn btn-dark">Перейти к онлайн-записи</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок: Задача и Решение -->
+        <section class="section">
+            <div class="container project-info-grid">
+                <div class="gsap-reveal">
+                    <h3>Задача и<br>Решение</h3>
+                </div>
+                <div class="project-info-text gsap-reveal">
+                    <p><strong>Цель:</strong><br>
+                    Разработать современный сайт для премиального beauty-пространства, который покажет экспертность команды, разнообразие услуг и&nbsp;уникальные предложения клуба лояльности. Сайт должен был вызвать доверие, подчеркнуть премиальный сервис и&nbsp;обеспечить простую запись на&nbsp;любую услугу.
+                    </p>
+                    <p><strong>Решение:</strong><br>
+                    — Мы построили структуру сайта вокруг ключевых сценариев пользователя: знакомство с&nbsp;пространством&nbsp;&rarr; презентация команды и&nbsp;услуг&nbsp;&rarr; уникальные предложения&nbsp;&rarr; запись. <br>
+                    — Визуально сайт оформлен в&nbsp;светлой и&nbsp;воздушной премиальной гамме, с&nbsp;крупными фотографиями, интерактивными блоками и&nbsp;микроанимациями. Особое внимание уделено: демонстрации преимуществ (мастера-эксперты, премиум косметика, приватность, безупречный сервис), различным направлениям услуг с&nbsp;возможностью онлайн-записи, а также закрытой программе лояльности с&nbsp;кэшбеком, подарками и&nbsp;приоритетной записью для VIP-гостей. <br>
+                    — Форма записи и&nbsp;контактов интегрирована в&nbsp;ключевые блоки, что сокращает путь пользователя до&nbsp;подтверждения визита. Сайт подчеркивает премиальность бренда и&nbsp;создает ощущение эксклюзивного пространства красоты, доступного для каждого гостя.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПЛЕЙСХОЛДЕР ФУТЕРА -->
+        <div id="footer-placeholder"></div>
+    </main>
+
+    <!-- Скрипты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

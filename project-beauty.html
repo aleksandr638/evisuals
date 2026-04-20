@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>theFirst | Space of Beauty</title>
+
+    <!-- Премиальные шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Lenis для плавного инерционного скролла -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* ЦВЕТОВАЯ СХЕМА И ПЕРЕМЕННЫЕ */
+        :root {
+            --bg-main: #f5f4f0; 
+            --bg-accent: #e8e5df; 
+            --bg-card: #ebe9e4; 
+            --text-dark: #2a2928; 
+            --border-color: #d1cfc9; 
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Jost', sans-serif;
+            
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* БАЗОВЫЕ СТИЛИ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { font-family: var(--font-sans); background-color: var(--bg-main); color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+        body.menu-open { overflow: hidden; } 
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { display: block; max-width: 100%; object-fit: cover; }
+
+        /* УТИЛИТЫ И КОНТЕЙНЕР */
+        .container { padding-left: 5vw; padding-right: 5vw; max-width: 1800px; margin: 0 auto; }
+        .section-padding { padding-top: 120px; padding-bottom: 120px; }
+        .border-bottom { border-bottom: 1px solid var(--border-color); }
+        .section-title { font-family: var(--font-serif); font-size: clamp(32px, 4vw, 42px); font-weight: 500; margin-bottom: 60px; }
+
+        /* АНИМАЦИИ ПОЯВЛЕНИЯ */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 5vw; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color); background: var(--bg-main);
+        }
+        .top-bar span { opacity: 0.7; }
+
+        /* HEADER */
+        header {
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            padding: 20px 5vw; border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; background: rgba(245, 244, 240, 0.95);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100;
+        }
+        .nav-left, .nav-right { display: flex; gap: 30px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;}
+        .nav-right { justify-content: flex-end; }
+        .nav-left a:hover, .nav-right a:hover { opacity: 0.5; }
+        .logo { font-family: var(--font-serif); font-size: 32px; font-weight: 600; letter-spacing: -1px; text-align: center; position: relative; z-index: 102; }
+        
+        /* ВЫПАДАЮЩЕЕ МЕНЮ ДЕСКТОП */
+        .dropdown { position: relative; padding-bottom: 10px; margin-bottom: -10px;}
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0; background: var(--bg-main); border: 1px solid var(--border-color);
+            padding: 20px; width: 280px; display: flex; flex-direction: column; gap: 14px;
+            opacity: 0; visibility: hidden; transform: translateY(10px); transition: var(--transition); z-index: 10;
+        }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-menu a { font-size: 11px; text-transform: none; font-weight: 400; letter-spacing: 0.5px;}
+        .dropdown-menu a:hover { opacity: 0.5; padding-left: 5px;}
+
+        /* КНОПКА БУРГЕРА */
+        .burger-btn { display: none; flex-direction: column; justify-content: space-between; width: 24px; height: 10px; cursor: pointer; z-index: 102; }
+        .burger-btn span { display: block; width: 100%; height: 1px; background: var(--text-dark); transition: var(--transition); }
+        .burger-btn.active span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+        .burger-btn.active span:nth-child(2) { opacity: 0; }
+        .burger-btn.active span:nth-child(3) { transform: translateY(-4.5px) rotate(-45deg); }
+
+        /* МОБИЛЬНОЕ МЕНЮ */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-main); z-index: 101;
+            display: flex; flex-direction: column; justify-content: center; padding: 5vw;
+            opacity: 0; visibility: hidden; transform: translateY(-20px); transition: all 0.5s ease;
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .mobile-nav-links { display: flex; flex-direction: column; gap: 24px; text-align: center; }
+        .mobile-nav-links a { font-family: var(--font-serif); font-size: 28px; font-weight: 400; }
+        .mobile-services-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; margin-bottom: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); }
+        .mobile-services-list a { font-family: var(--font-sans); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+        .mobile-nav-bottom { margin-top: 40px; text-align: center; }
+
+        /* КНОПКИ */
+        .btn-solid {
+            background: var(--text-dark); color: var(--bg-main); padding: 18px 36px;
+            font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 500;
+            display: inline-block; cursor: pointer; border: 1px solid var(--text-dark); transition: var(--transition); text-align: center;
+        }
+        .btn-solid:hover { background: transparent; color: var(--text-dark); }
+        .btn-outline { background: transparent; color: var(--text-dark); border: 1px solid var(--text-dark); padding: 18px 36px; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; text-align: center; display: inline-block;}
+        .btn-outline:hover { background: var(--text-dark); color: var(--bg-main); }
+
+        /* HERO SECTION */
+        .hero { display: flex; height: 85vh; min-height: 600px; border-bottom: 1px solid var(--border-color); }
+        .hero-left {
+            flex: 1; background: var(--bg-accent); padding: 5vw; position: relative;
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 40px;
+            border-right: 1px solid var(--border-color);
+        }
+        .hero-text h1 { font-size: 12px; font-weight: 500; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px;}
+        .hero-text p { font-size: clamp(28px, 4vw, 48px); font-family: var(--font-serif); max-width: 550px; line-height: 1.1; }
+        .hero-right { flex: 1; background: url('src/salon-interior.png') center/cover; }
+
+        /* БЕГУЩАЯ СТРОКА */
+        .marquee-wrapper {
+            background: var(--bg-accent); border-bottom: 1px solid var(--border-color);
+            padding: 16px 0; overflow: hidden; display: flex; white-space: nowrap; align-items: center;
+        }
+        .marquee-content {
+            display: inline-block; animation: marquee 25s linear infinite;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 500;
+        }
+        .marquee-content span { margin-right: 40px; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* ПРЕИМУЩЕСТВА */
+        .advantages-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-color); border-right: none;}
+        .adv-card { padding: 40px; border-right: 1px solid var(--border-color); transition: var(--transition);}
+        .adv-card:hover { background: var(--bg-accent); }
+        .adv-num { font-family: var(--font-serif); font-size: 36px; color: var(--border-color); margin-bottom: 24px;}
+        .adv-card h4 { font-size: 18px; margin-bottom: 12px; font-weight: 500;}
+        .adv-card p { font-size: 14px; opacity: 0.7; line-height: 1.5;}
+
+        /* НАПРАВЛЕНИЯ (УСЛУГИ) - ТИПОГРАФИЧЕСКИЙ СПИСОК */
+        .services-list { border-top: 1px solid var(--border-color); }
+        .service-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 40px 20px; border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark); background: transparent; transition: var(--transition);
+            scroll-margin-top: 100px; cursor: pointer;
+        }
+        .service-left { display: flex; align-items: baseline; gap: 30px; }
+        .service-num { font-family: var(--font-sans); font-size: 14px; opacity: 0.5; width: 24px;}
+        .service-name { font-family: var(--font-serif); font-size: clamp(24px, 3vw, 40px); font-weight: 400; transition: var(--transition); }
+        .service-action {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 500;
+            opacity: 0; transform: translateX(-20px); transition: var(--transition);
+        }
+        .service-action span { font-size: 18px; line-height: 1; margin-bottom: 2px; }
+
+        @media (min-width: 1025px) {
+            .service-row:hover { background: var(--bg-accent); padding-left: 40px; padding-right: 40px; }
+            .service-row:hover .service-action { opacity: 1; transform: translateX(0); }
+        }
+
+        /* О ПРОСТРАНСТВЕ */
+        .about-section { display: flex; border-bottom: 1px solid var(--border-color);}
+        .about-img { flex: 1; border-right: 1px solid var(--border-color); min-height: 700px; background: url('src/hands-bowl.png') center/cover; }
+        .about-content { flex: 1; padding: 5vw; display: flex; flex-direction: column; justify-content: center; background: var(--bg-main); }
+        .about-content h2 { font-family: var(--font-serif); font-size: clamp(32px, 4vw, 48px); margin-bottom: 30px; font-weight: 500; line-height: 1.1;}
+        .about-content p { font-size: 16px; line-height: 1.6; margin-bottom: 40px; max-width: 500px; opacity: 0.8;}
+
+        /* КОМАНДА */
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;}
+        .team-card img { aspect-ratio: 3/4; width: 100%; object-fit: cover; margin-bottom: 24px; filter: grayscale(20%); transition: var(--transition);}
+        .team-card:hover img { filter: grayscale(0%); transform: translateY(-10px);}
+        .team-card h4 { font-family: var(--font-serif); font-size: 22px; margin-bottom: 6px;}
+        .team-card p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;}
+
+        /* УНИКАЛЬНЫЕ ПРЕДЛОЖЕНИЯ */
+        .offers-banner { padding: 140px 5vw; text-align: center; background: var(--bg-accent); border-bottom: 1px solid var(--border-color);}
+        .offers-banner h2 { font-family: var(--font-serif); font-size: clamp(36px, 4vw, 56px); margin-bottom: 24px; font-weight: 400;}
+
+        /* ФОРМА ЗАПИСИ */
+        .booking-section { display: flex; border-bottom: 1px solid var(--border-color); background: var(--bg-main);}
+        .booking-left { flex: 1; padding: 5vw; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;}
+        .booking-left h2 { font-family: var(--font-serif); font-size: clamp(36px, 4vw, 56px); margin-bottom: 20px; line-height: 1.1;}
+        .booking-right { flex: 1; padding: 5vw; background: #fff;}
+        .form-group { margin-bottom: 30px;}
+        .form-group input, .form-group select { 
+            width: 100%; padding: 18px 0; border: none; border-bottom: 1px solid var(--border-color); 
+            background: transparent; font-family: var(--font-sans); font-size: 16px; outline: none; transition: var(--transition);
+            border-radius: 0; appearance: none; color: var(--text-dark);
+        }
+        .form-group input:focus, .form-group select:focus { border-bottom-color: var(--text-dark); }
+        .form-group input::placeholder { color: #a09e99; }
+        
+        /* FOOTER */
+        footer { padding: 80px 5vw 40px; background: var(--text-dark); color: var(--bg-main); }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-col h4 { font-family: var(--font-serif); font-size: 22px; margin-bottom: 24px; font-weight: 400;}
+        .footer-col ul li { margin-bottom: 14px; font-size: 13px; opacity: 0.6; transition: var(--transition);}
+        .footer-col ul li a:hover { opacity: 1; padding-left: 5px;}
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; justify-content: space-between; font-size: 11px; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px;}
+
+        /* =========================================================================
+           АДАПТИВНОСТЬ (MOBILE & TABLET)
+           ========================================================================= */
+        @media (max-width: 1024px) {
+            .advantages-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            /* Шапка */
+            .top-bar { display: none; } 
+            header { grid-template-columns: auto 1fr auto; padding: 16px 20px; }
+            .nav-left, .nav-right { display: none; } 
+            .burger-btn { display: flex; }
+            .logo { font-size: 26px; }
+            
+            /* Отступы */
+            .section-padding { padding-top: 100px; padding-bottom: 100px; }
+            .container { padding-left: 20px; padding-right: 20px; }
+            .section-title { font-size: 36px; margin-bottom: 50px; text-align: center; }
+
+            /* Hero */
+            .hero { flex-direction: column; height: auto; border-bottom: none; min-height: auto;}
+            .hero-left { padding: 80px 20px; border-right: none; align-items: center; text-align: center; gap: 30px;}
+            .hero-text p { margin: 0 auto; font-size: 32px;}
+            .hero-right { display: block; width: 100%; height: 400px; }
+
+            /* Преимущества */
+            .advantages-grid { grid-template-columns: 1fr; border-right: none; border-bottom: none;}
+            .adv-card { border-right: none; border-bottom: 1px solid var(--border-color); padding: 50px 20px; text-align: center;}
+            .adv-card:last-child { border-bottom: none; }
+            .adv-num { font-size: 36px; margin-bottom: 20px; }
+
+            /* Направления (Услуги) */
+            .service-row { flex-direction: column; align-items: flex-start; gap: 16px; padding: 30px 10px; }
+            .service-left { gap: 20px; }
+            .service-action { opacity: 1; transform: none; padding-left: 44px; color: var(--text-dark); }
+
+            /* О пространстве */
+            .about-section { flex-direction: column; }
+            .about-img { min-height: 350px; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .about-content { padding: 100px 20px; text-align: center;}
+            .about-content p { margin: 0 auto 40px; }
+
+            /* Команда */
+            .team-grid { grid-template-columns: 1fr; gap: 60px; }
+            .team-card { text-align: center; }
+            .team-card img { max-width: 320px; margin: 0 auto 24px; filter: grayscale(0%); }
+
+            /* Оффер */
+            .offers-banner { padding: 100px 20px; }
+            .offers-banner h2 { font-size: 32px; }
+
+            /* Форма записи */
+            .booking-section { flex-direction: column; }
+            .booking-left { border-right: none; border-bottom: 1px solid var(--border-color); padding: 100px 20px 40px; text-align: center;}
+            .booking-left p { margin: 16px auto 0; }
+            .booking-right { padding: 40px 20px 100px; }
+            .form-group input, .form-group select { font-size: 16px; padding: 16px 0;}
+
+            /* Footer */
+            .footer-grid { grid-template-columns: 1fr; gap: 50px; text-align: center;}
+            .footer-bottom { flex-direction: column; gap: 20px; text-align: center;}
+        }
+
+        /* Бейдж */
+        .era-demo-badge {
+            position: fixed; bottom: 30px; right: 30px; width: 320px;
+            background: #f5f4f0; border: 1px solid #d1cfc9;
+            padding: 24px; color: #222; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            font-family: var(--font-sans);
+            transform: translateY(100px); opacity: 0;
+            animation: slideUpBadge 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+        }
+        @keyframes slideUpBadge { to { transform: translateY(0); opacity: 1; } }
+        .era-demo-badge.hidden { display: none; }
+        .era-badge-close {
+            position: absolute; top: 12px; right: 12px; background: none; border: none;
+            cursor: pointer; opacity: 0.4; transition: var(--transition);
+        }
+        .era-badge-close:hover { opacity: 1; }
+        .era-badge-title { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 8px; }
+        .era-badge-title span { color: #888; }
+        .era-badge-desc { font-size: 0.8rem; color: #666; margin-bottom: 20px; line-height: 1.5; }
+        .era-badge-btn {
+            display: block; text-align: center; width: 100%; padding: 14px;
+            background: var(--text-dark); color: #fff; font-size: 10px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px; transition: var(--transition);
+        }
+        .era-badge-btn:hover { background: #000; }
+
+        @media (max-width: 768px) {
+            .era-demo-badge { width: auto; bottom: 20px; left: 20px; right: 20px; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ВЕРХНЯЯ ПОЛОСА -->
+    <div class="top-bar">
+        <span>г. Сочи, ул. Гагринская, 10</span>
+        <span>Space of Beauty</span>
+        <span>Ежедневно с 09:00 до 21:00</span>
+    </div>
+
+    <!-- ШАПКА -->
+    <header>
+        <!-- Бургер для мобильных -->
+        <div class="burger-btn" id="burgerBtn">
+            <span></span><span></span><span></span>
+        </div>
+
+        <nav class="nav-left">
+            <div class="dropdown">
+                <a href="#services" class="scroll-link">Услуги ▾</a>
+                <div class="dropdown-menu">
+                    <a href="#hair" class="scroll-link">Парикмахерский зал</a>
+                    <a href="#nails" class="scroll-link">Ногтевой сервис</a>
+                    <a href="#mens" class="scroll-link">Мужской сервис</a>
+                    <a href="#kids" class="scroll-link">Детский сервис</a>
+                    <a href="#wedding" class="scroll-link">Свадебный и выездной сервис</a>
+                    <a href="#makeup" class="scroll-link">Макияж, брови и ресницы</a>
+                    <a href="#aesthetic" class="scroll-link">Эстетическая косметология</a>
+                    <a href="#medical" class="scroll-link">Медицинская косметология</a>
+                </div>
+            </div>
+            <a href="#about" class="scroll-link">О пространстве</a>
+            <a href="#team" class="scroll-link">Команда</a>
+        </nav>
+        
+        <a href="#" class="logo">theFirst</a>
+        
+        <nav class="nav-right">
+            <a href="#advantages" class="scroll-link">Преимущества</a>
+            <a href="#offers" class="scroll-link">Лояльность</a>
+            <a href="#booking" class="scroll-link" style="font-weight: 600;">Запись онлайн</a>
+        </nav>
+    </header>
+
+    <!-- ПОЛНОЭКРАННОЕ МОБИЛЬНОЕ МЕНЮ -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <nav class="mobile-nav-links">
+            <a href="#about" class="mobile-link">О пространстве</a>
+            <a href="#team" class="mobile-link">Команда</a>
+            <a href="#advantages" class="mobile-link">Преимущества</a>
+            <a href="#offers" class="mobile-link">Лояльность</a>
+        </nav>
+        
+        <div class="mobile-services-list">
+            <a href="#hair" class="mobile-link">Парикмахерский зал</a>
+            <a href="#nails" class="mobile-link">Ногтевой сервис</a>
+            <a href="#aesthetic" class="mobile-link">Косметология</a>
+            <a href="#makeup" class="mobile-link">Макияж и брови</a>
+        </div>
+
+        <div class="mobile-nav-bottom">
+            <a href="#booking" class="btn-solid mobile-link" style="width: 100%;">Запись онлайн</a>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-left reveal">
+            <div class="hero-text">
+                <h1>theFirst luxury space</h1>
+                <p>Пространство красоты. Создано, чтобы подчеркнуть вашу уникальность.</p>
+            </div>
+            <div>
+                <a href="#booking" class="btn-solid scroll-link">Онлайн запись</a>
+            </div>
+        </div>
+        <div class="hero-right reveal"></div>
+    </section>
+
+    <!-- БЕГУЩАЯ СТРОКА -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span>✦ СКИДКА 15% НА ПЕРВОЕ ПОСЕЩЕНИЕ ПО ПРОМОКОДУ THEFIRST ✦ УНИКАЛЬНАЯ ПРОГРАММА ЛОЯЛЬНОСТИ ДЛЯ ПОСТОЯННЫХ ГОСТЕЙ ✦</span>
+            <span>СКИДКА 15% НА ПЕРВОЕ ПОСЕЩЕНИЕ ПО ПРОМОКОДУ THEFIRST ✦ УНИКАЛЬНАЯ ПРОГРАММА ЛОЯЛЬНОСТИ ДЛЯ ПОСТОЯННЫХ ГОСТЕЙ ✦</span>
+            <span>СКИДКА 15% НА ПЕРВОЕ ПОСЕЩЕНИЕ ПО ПРОМОКОДУ THEFIRST ✦ УНИКАЛЬНАЯ ПРОГРАММА ЛОЯЛЬНОСТИ ДЛЯ ПОСТОЯННЫХ ГОСТЕЙ ✦</span>
+        </div>
+    </div>
+
+    <!-- ПРЕИМУЩЕСТВА -->
+    <section class="section-padding container" id="advantages">
+        <h2 class="section-title reveal">Преимущества</h2>
+        <div class="advantages-grid reveal">
+            <div class="adv-card">
+                <div class="adv-num">01</div>
+                <h4>Мастера-эксперты</h4>
+                <p>Наша команда регулярно проходит стажировки и обучения у ведущих мировых стилистов и врачей.</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-num">02</div>
+                <h4>Премиум косметика</h4>
+                <p>Мы работаем исключительно на сертифицированной косметике люкс-сегмента.</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-num">03</div>
+                <h4>Приватность</h4>
+                <p>VIP-кабинеты для тех, кто ценит максимальный комфорт и уединение.</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-num">04</div>
+                <h4>Безупречный сервис</h4>
+                <p>Авторская барная карта, спешалти кофе, парковка и консьерж-сервис.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- НАПРАВЛЕНИЯ (УСЛУГИ) - СПИСОК -->
+    <section class="section-padding container" id="services">
+        <h2 class="section-title reveal">Направления</h2>
+        
+        <div class="services-list reveal">
+            <a href="#booking" class="service-row scroll-link" id="hair">
+                <div class="service-left">
+                    <span class="service-num">01</span>
+                    <span class="service-name">Парикмахерский зал</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="nails">
+                <div class="service-left">
+                    <span class="service-num">02</span>
+                    <span class="service-name">Ногтевой сервис</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="mens">
+                <div class="service-left">
+                    <span class="service-num">03</span>
+                    <span class="service-name">Мужской сервис (Barber)</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="kids">
+                <div class="service-left">
+                    <span class="service-num">04</span>
+                    <span class="service-name">Детский сервис</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="wedding">
+                <div class="service-left">
+                    <span class="service-num">05</span>
+                    <span class="service-name">Свадебный и Event-сервис</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="makeup">
+                <div class="service-left">
+                    <span class="service-num">06</span>
+                    <span class="service-name">Макияж, брови и ресницы</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="aesthetic">
+                <div class="service-left">
+                    <span class="service-num">07</span>
+                    <span class="service-name">Эстетическая косметология</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+
+            <a href="#booking" class="service-row scroll-link" id="medical">
+                <div class="service-left">
+                    <span class="service-num">08</span>
+                    <span class="service-name">Медицинская косметология</span>
+                </div>
+                <div class="service-action">Записаться <span>→</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- О ПРОСТРАНСТВЕ -->
+    <section class="about-section" id="about">
+        <div class="about-img reveal"></div>
+        <div class="about-content reveal">
+            <h2>theFirst: Space of Beauty в самом сердце Сочи</h2>
+            <p>Премиальное пространство красоты, где органично сочетаются передовые технологии эстетической медицины и безупречный сервис. Мы создали место силы, вдохновляясь истинной красотой каждого гостя.</p>
+            <div>
+                <a href="#team" class="btn-outline scroll-link">Познакомиться с командой</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОМАНДА -->
+    <section class="section-padding container" id="team">
+        <div style="text-align: center; margin-bottom: 60px;" class="reveal">
+            <h2 class="section-title" style="margin-bottom: 0;">Топ-мастера</h2>
+        </div>
+        <div class="team-grid reveal">
+            <div class="team-card">
+                <img src="src/s-1.png" alt="Мастер">
+                <h4>Анна Смирнова</h4>
+                <p>Арт-директор, Топ-стилист</p>
+            </div>
+            <div class="team-card">
+                <img src="src/s-2.png" alt="Врач">
+                <h4>Елена Романова</h4>
+                <p>Врач-косметолог, Дерматолог</p>
+            </div>
+            <div class="team-card">
+                <img src="src/s-3.png" alt="Мастер">
+                <h4>Алина Иванова</h4>
+                <p>Ведущий Барбер, Мужской стилист</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- УНИКАЛЬНЫЕ ПРЕДЛОЖЕНИЯ -->
+    <section class="offers-banner reveal" id="offers">
+        <h2>Уникальные предложения theFirst</h2>
+        <p style="margin-bottom: 40px; opacity: 0.8; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">Откройте для себя нашу закрытую программу лояльности. Кэшбек до 15%, подарки в день рождения и приоритетная запись для VIP-гостей.</p>
+        <a href="#booking" class="btn-solid scroll-link" style="background: transparent; color: var(--text-dark);">Стать участником клуба</a>
+    </section>
+
+    <!-- ОНЛАЙН ЗАПИСЬ -->
+    <section class="booking-section" id="booking">
+        <div class="booking-left reveal">
+            <h2>Запланируйте<br>свой визит</h2>
+            <p style="opacity: 0.7; max-width: 300px; margin-top: 16px;">Оставьте заявку, и администратор свяжется с вами в течение 5 минут для подтверждения времени.</p>
+        </div>
+        <div class="booking-right reveal">
+            <form id="bookingForm">
+                <div class="form-group">
+                    <input type="text" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Номер телефона" required>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>Выберите направление</option>
+                        <option value="hair">Парикмахерский зал</option>
+                        <option value="nails">Ногтевой сервис</option>
+                        <option value="mens">Мужской сервис</option>
+                        <option value="kids">Детский сервис</option>
+                        <option value="wedding">Свадебный сервис</option>
+                        <option value="makeup">Макияж и брови</option>
+                        <option value="aesthetic">Эстетическая косметология</option>
+                        <option value="medical">Медицинская косметология</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-solid" style="width: 100%; margin-top: 20px;">Подтвердить запись</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid reveal">
+            <div class="footer-col">
+                <h4 style="font-size: 32px; font-weight: 600; font-family: var(--font-serif);">theFirst</h4>
+                <ul>
+                    <li>г. Сочи, ул. Гагринская, 10</li>
+                    <li>Ежедневно: 09:00 - 21:00</li>
+                    <li style="margin-top: 20px;"><a href="tel:+79000000000" style="font-size: 16px; opacity: 1;">+7 (900) 000-00-00</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Услуги</h4>
+                <ul>
+                    <li><a href="#hair" class="scroll-link">Парикмахерский зал</a></li>
+                    <li><a href="#nails" class="scroll-link">Ногтевой сервис</a></li>
+                    <li><a href="#aesthetic" class="scroll-link">Косметология</a></li>
+                    <li><a href="#makeup" class="scroll-link">Макияж и брови</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Пространство</h4>
+                <ul>
+                    <li><a href="#about" class="scroll-link">О нас</a></li>
+                    <li><a href="#team" class="scroll-link">Команда</a></li>
+                    <li><a href="#offers" class="scroll-link">Программа лояльности</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Соцсети</h4>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 theFirst Space of Beauty. Все права защищены.</span>
+            <span>Политика конфиденциальности</span>
+        </div>
+    </footer>
+
+    <!-- СКРИПТЫ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. ИНИЦИАЛИЗАЦИЯ ПЛАВНОГО СКРОЛЛА (Lenis)
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // 2. ЛОГИКА МОБИЛЬНОГО МЕНЮ (БУРГЕР)
+            const burgerBtn = document.getElementById('burgerBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const body = document.body;
+
+            function toggleMenu() {
+                burgerBtn.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                body.classList.toggle('menu-open');
+            }
+
+            burgerBtn.addEventListener('click', toggleMenu);
+
+            // Закрытие меню при клике
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleMenu(); 
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    setTimeout(() => {
+                        if (targetElement) {
+                            lenis.scrollTo(targetElement, { offset: -80 }); 
+                        }
+                    }, 300);
+                });
+            });
+
+            // 3. Плавный скролл для десктопных ссылок
+            document.querySelectorAll('a.scroll-link:not(.mobile-link)').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        lenis.scrollTo(targetElement, { offset: -100 }); 
+                    }
+                });
+            });
+
+            // 4. АНИМАЦИИ ПОЯВЛЕНИЯ
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // 5. ЛОГИКА ФОРМЫ
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Спасибо! Ваша заявка успешно отправлена. Администратор theFirst свяжется с вами в течение 5 минут.');
+                    bookingForm.reset();
+                });
+            }
+        });
+    </script>
+    
+    <div class="era-demo-badge" id="eraBadge">
+    <div class="era-badge-title">Создано в <span>eravisuals</span></div>
+    <p class="era-badge-desc">Этот сайт демонстрирует наши возможности в области веб-дизайна и разработки.</p>
+    <a href="case-thefirst.html" class="era-badge-btn">Вернуться назад</a>
+</div>
+</body>
+</html>

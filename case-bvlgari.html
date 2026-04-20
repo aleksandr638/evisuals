@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кейс: BVLGARI DIVAS' DREAM CGI | ERA.VISUALS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <main>
+        <section class="project-hero">
+            <div class="container">
+                <a href="index.html#portfolio" class="back-link gsap-reveal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Назад к портфолио
+                </a>
+
+                <h1 class="project-title gsap-reveal">BVLGARI DIVAS' DREAM</h1>
+            </div>
+        </section>
+
+        <section class="section no-border-top">
+            <div class="container">
+                <div class="module-web gsap-reveal">
+                    
+                    <img src="src/vfx/cover-bv-wide.png" alt="BVLGARI DIVAS' DREAM" class="module-web-img">
+                    
+                    <div class="module-web-info">
+                        <h4>О проекте</h4>
+                        <p>
+                            Для визуализации браслета BVLGARI DIVAS' DREAM мы разработали премиальную CGI-концепцию, 
+                            полностью основанную на 3D-графике. Основной акцент был сделан на передаче ювелирной 
+                            эстетики: плавных форм, фирменного орнамента и игры света на драгоценных материалах. 
+                            В рамках проекта было создано короткое рекламное видео и серия имиджевых рендеров.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container project-info-grid">
+                <div class="gsap-reveal">
+                    <h3>Задача и<br>Решение</h3>
+                </div>
+                <div class="project-info-text gsap-reveal">
+                    <p>
+                        <strong>Цель:</strong><br>
+                        Создать визуально выразительный контент для соцсетей, 
+                        передающий премиальность бренда и изящную форму коллекции DIVAS' DREAM.
+                    </p>
+                    <p>
+                        <strong>Решение:</strong><br>
+                        — Настроено сложное студийное освещение для реалистичной передачи металла и камней.<br>
+                        — Добавлены мягкие световые блики и премиальный саунд-дизайн.<br>
+                        — Создано короткое CGI-видео с плавной анимацией и акцентом на деталях изделия.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                
+                <div class="section-header gsap-reveal" style="text-align: center; margin: 0 auto 3rem;">
+                    <h2>Главный ролик</h2>
+                    <p>Короткое CGI-видео с акцентом на форму, свет и текстуры.</p>
+                </div>
+                
+                <div class="video-gallery-flex gsap-reveal" style="justify-content: center; margin-bottom: 8rem;">
+                    <div class="video-wrapper custom-player">
+                        <video src="src/vfx/bvl-divas.mp4" playsinline preload="metadata"></video>
+                        <div class="play-overlay">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-header gsap-reveal">
+                    <h2>Стиллы кампании</h2>
+                    <p>CGI-рендеры для digital и рекламных материалов.</p>
+                </div>
+
+                <div class="case-gallery-grid gsap-reveal">
+                    
+                    <div class="gallery-item">
+                        <img src="src/vfx/bv-1.png" alt="BVLGARI DIVAS' DREAM 1">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="src/vfx/bv-2.png" alt="BVLGARI DIVAS' DREAM 2">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="src/vfx/bv-3.png" alt="BVLGARI DIVAS' DREAM 3">
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="src/vfx/bv-4.png" alt="BVLGARI DIVAS' DREAM 4">
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <div id="footer-placeholder"></div>
+    </main>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="preview">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

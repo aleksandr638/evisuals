@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERA.VISUALS | Premium Digital Content</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ПЛЕЙСХОЛДЕР ХЕДЕРА -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Hero -->
+        <section class="section hero" id="hero-section">
+            <div class="hero-glow-blob glow-1"></div>
+            <div class="hero-glow-blob glow-2"></div>
+            <pre class="ascii-art" id="ascii-canvas"></pre>
+
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="gsap-reveal">Цифровые проекты<br>нового уровня</h1>
+                    <p class="gsap-reveal">Мы помогаем компаниям превращать сложные идеи в понятный, эстетичный и конверсионный визуальный контент.</p>
+                    
+                    <div class="hero-btns gsap-reveal">
+                        <a href="#portfolio" class="btn btn-dark">Смотреть проекты</a>
+                        <a href="#pricing" class="btn btn-outline">Услуги и цены</a>
+                    </div>
+
+                    <div class="trust-badge gsap-reveal">
+                        <span>Нам доверяют резиденты</span>
+                        <img src="src/Skolkovo-badge.png" alt="Skolkovo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Метрики -->
+        <section class="section">
+            <div class="container">
+                <div class="metrics-grid">
+                    <div class="metric-item gsap-reveal">
+                        <div class="metric-num"><span class="counter" data-target="50">0</span>+</div>
+                        <div class="metric-text">Успешно завершенных проектов</div>
+                    </div>
+                    <div class="metric-item gsap-reveal">
+                        <div class="metric-num"><span class="counter" data-target="5">0</span>+</div>
+                        <div class="metric-text">Лет опыта</div>
+                    </div>
+                    <div class="metric-item gsap-reveal">
+                        <div class="metric-num"><span class="counter" data-target="600">0</span>+</div>
+                        <div class="metric-text">Визуалов создано</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Услуги -->
+        <section class="section" id="services">
+            <div class="container">
+                <div class="section-header gsap-reveal">
+                    <h2>Комплексные визуальные решения</h2>
+                    <p>Которые помогают продуктам выделяться и вызывать доверие с первого взгляда.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card gsap-reveal">
+                        <div class="srv-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></div>
+                        <h3>3D Видео</h3>
+                        <p>Продуктовые анимации, рекламные ролики и визуализации, которые захватывают внимание с первых секунд.</p>
+                    </div>
+                    <div class="service-card gsap-reveal">
+                        <div class="srv-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
+                        <h3>ИИ-контент</h3>
+                        <p>Генерация уникальных изображений и видео с помощью нейросетей для социальных сетей и рекламных кампаний.</p>
+                    </div>
+                    <div class="service-card gsap-reveal">
+                        <div class="srv-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+                        <h3>Веб-сайты</h3>
+                        <p>Разработка минималистичных, быстрых сайтов с высокими конверсиями.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПОРТФОЛИО -->
+        <section class="section" id="portfolio">
+            <div class="container"> 
+                <div class="portfolio-topbar gsap-reveal">
+                    <div class="section-header" style="margin-bottom: 0;">
+                        <h2 style="margin-bottom: 0; display: flex; align-items: flex-start; gap: 4px;">Избранные работы<sup class="portfolio-count">(8)</sup></h2>
+                    </div>
+                    
+                    <div class="portfolio-filters" id="portfolio-filters">
+                        <button class="filter-btn active" data-view="grid" title="Сетка">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </button>
+                        <button class="filter-btn" data-view="list" title="Список">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="portfolio-gallery view-grid gsap-reveal" id="portfolio-gallery">
+                    <a href="case-cl.html" class="p-item">
+                        <div class="p-bg" style="background-image: url('src/cover-cl.png');"></div>
+                        <div class="overlay"></div>
+                        <div class="p-info"><h4 class="p-name">Сайт для сервиса клининга</h4><span class="p-cat">Веб-разработка</span></div>
+                    </a>
+                    
+                    <a href="case-megacar.html" class="p-item">
+                        <div class="p-bg" style="background-image: url('src/cover-megacars.png');"></div>
+                        <div class="overlay"></div>
+                        <div class="p-info"><h4 class="p-name">Сайт для MEGACAR</h4><span class="p-cat">Веб-разработка</span></div>
+                    </a>
+
+                    <a href="case-samana.html" class="p-item">
+                        <div class="p-bg" style="background-image: url('src/cover-samana.png');"></div>
+                        <div class="overlay"></div>
+                        <div class="p-info"><h4 class="p-name">Сайт для SAMANA</h4><span class="p-cat">Веб-разработка</span></div>
+                    </a>
+
+                    <a href="case-thefirst.html" class="p-item">
+                        <div class="p-bg" style="background-image: url('src/cover-thefirst.png');"></div>
+                        <div class="overlay"></div>
+                        <div class="p-info"><h4 class="p-name">Сайт для theFirst</h4><span class="p-cat">Веб-разработка</span></div>
+                    </a>
+
+                    <!-- Остальные проекты (просто заглушки по вашему коду) -->
+                    <a href="case-awn.html" class="p-item"><div class="p-bg" style="background-image: url('src/ai-content/all-we-need-hd/52.png');"></div><div class="overlay"></div><div class="p-info"><h4 class="p-name">Имиджевая фотосессия</h4><span class="p-cat">ИИ-контент</span></div></a>
+
+                    <a href="case-lime.html" class="p-item"><div class="p-bg" style="background-image: url('src/ai-content/lime-hd/cover-lime.png');"></div><div class="overlay"></div><div class="p-info"><h4 class="p-name">Фотосессия для лукбука</h4><span class="p-cat">ИИ-контент</span></div></a>
+
+                    <a href="case-askent.html" class="p-item"><div class="p-bg" style="background-image: url('src/cover-askent-square.png');"></div><div class="overlay"></div><div class="p-info"><h4 class="p-name">AI-кампания для ASKENT</h4><span class="p-cat">ИИ-контент // R&D Проект</span></div></a>
+
+                    <a href="case-bvlgari.html" class="p-item"><div class="p-bg" style="background-image: url('src/vfx/cover-bv-square.png');"></div><div class="overlay"></div><div class="p-info"><h4 class="p-name">BVLGARI DIVAS' DREAM</h4><span class="p-cat">CGI // R&D Проект</span></div></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Этапы работы -->
+        <section class="section" id="workflow">
+            <div class="container">
+                <div class="section-header gsap-reveal"><h2>Как мы работаем</h2><p>Прозрачный процесс от первой идеи до финального релиза.</p></div>
+                <div class="workflow-grid">
+                    <div class="workflow-step gsap-reveal"><div class="step-num">1</div><h4 class="step-title">Запрос</h4><p class="step-desc">Вы оставляете заявку, мы детально обсуждаем цели проекта, формат, сроки и требования.</p></div>
+                    <div class="workflow-step gsap-reveal"><div class="step-num">2</div><h4 class="step-title">Согласование</h4><p class="step-desc">Формируем чёткое предложение, фиксируем объём работ. Подписываем договор и утверждаем старт.</p></div>
+                    <div class="workflow-step gsap-reveal"><div class="step-num">3</div><h4 class="step-title">Производство</h4><p class="step-desc">Реализуем проект в выбранном формате. Предоставляем промежуточные результаты для контроля.</p></div>
+                    <div class="workflow-step gsap-reveal"><div class="step-num">4</div><h4 class="step-title">Финализация</h4><p class="step-desc">Вносим финальные правки и передаём готовый продукт в согласованных форматах. Сопровождаем запуск.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Тарифы -->
+        <section class="section" id="pricing">
+            <div class="container">
+                <div class="section-header gsap-reveal" style="margin-bottom: 2rem;"><h2>Услуги и решения</h2><p>Прозрачные пакеты для любых бизнес-задач.</p></div>
+                
+                <h3 class="sub-header gsap-reveal"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>ИИ и Визуальный контент</h3>
+                
+                <div class="pricing-grid">
+                    <div class="price-card gsap-reveal"><div class="label" style="margin-bottom: 1rem;">Тестовый запуск</div><h4 class="price-name">Микро-контент</h4><div class="price-val">9 900 ₽</div><p class="price-desc">Компактный пакет для тестирования продукта и первых публикаций в соцсетях.</p><ul class="price-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 5 качественных фото</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 1 видео до 20 сек</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Срок: от 2 дней</li></ul><a href="#contact" class="btn btn-dark btn-full">Выбрать тариф</a></div>
+                    <div class="price-card gsap-reveal"><div class="label" style="margin-bottom: 1rem;">Базовый контент</div><h4 class="price-name">Стартовый пакет</h4><div class="price-val">14 900 ₽</div><p class="price-desc">Подходит для демонстрации нескольких продуктов в профессиональном формате.</p><ul class="price-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 12 качественных фото</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 3 видео до 20 сек</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Срок: от 3 дней</li></ul><a href="#contact" class="btn btn-dark btn-full">Выбрать тариф</a></div>
+                    <div class="price-card gsap-reveal"><div class="label" style="margin-bottom: 1rem;">Популярный</div><h4 class="price-name">Контент PRO</h4><div class="price-val">24 900 ₽</div><p class="price-desc">Расширенный пакет для промо акций. Материалы, готовые к публикации везде.</p><ul class="price-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 25 качественных фото</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 5 видео до 20 сек</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Срок: от 5 дней</li></ul><a href="#contact" class="btn btn-dark btn-full">Выбрать тариф</a></div>
+                    <div class="price-card gsap-reveal"><div class="label" style="margin-bottom: 1rem;">Масштаб</div><h4 class="price-name">Особый пакет</h4><div class="price-val">По запросу</div><p class="price-desc">Индивидуальное решение для крупных кампаний и съемок каталога.</p><ul class="price-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Более 25 фото</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Более 5 видео</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Создание 3D/VFX видео</li></ul><a href="#contact" class="btn btn-outline btn-full">Обсудить проект</a></div>
+                </div>
+
+                <h3 class="sub-header gsap-reveal" style="margin-top: 6rem;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>Разработка веб-сайтов</h3>
+                <div class="web-dev-section gsap-reveal">
+                    <div class="web-dev-info">
+                        <h3>Сайты, готовые к высоким конверсиям</h3>
+                        <p>Мы создаем современные, быстрые и эстетичные веб-решения.</p>
+                        <div class="label">Стоимость разработки</div><div class="price-start">от 19 990 ₽</div>
+                    </div>
+                    <div class="web-dev-form form-styled">
+                        <form onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+                            <input type="text" placeholder="Ваше имя" required><input type="text" placeholder="Телефон или Telegram" required>
+                            <div class="custom-select-wrapper" id="custom-select"><div class="custom-select"><div class="custom-select-trigger"><span>Какой тип сайта вам нужен?</span><svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="custom-options"><span class="custom-option" data-value="landing">Лендинг</span><span class="custom-option" data-value="multipage">Многостраничный сайт</span><span class="custom-option" data-value="ecommerce">Интернет-магазин</span></div></div><input type="hidden" name="site_type" id="site_type_input" required></div>
+                            <button type="submit" class="btn btn-dark btn-full">Оставить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section" id="faq">
+            <div class="container faq-container">
+                <div class="section-header gsap-reveal" style="text-align: center; margin: 0 auto 4rem auto;"><h2>Частые вопросы</h2></div>
+                <div class="faq-list gsap-reveal">
+                    <div class="faq-item"><div class="faq-header">Как происходит процесс оплаты? <div class="faq-icon"></div></div><div class="faq-content"><div class="faq-text">Обычно мы работаем по схеме 50% предоплаты перед началом производства и 50% после утверждения финальных результатов.</div></div></div>
+                    <div class="faq-item"><div class="faq-header">В каком формате передаются исходники? <div class="faq-icon"></div></div><div class="faq-content"><div class="faq-text">Финальные материалы передаются в высоком разрешении через облачные хранилища в удобных для веба и полиграфии форматах.</div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПЛЕЙСХОЛДЕР ФУТЕРА -->
+        <div id="footer-placeholder"></div>
+    </main>
+
+    <!-- Скрипты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
