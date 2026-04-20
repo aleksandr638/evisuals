@@ -13,7 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // Анимация рулетки цифр
 function startCinematicPreloader() {
     const strip = document.querySelector('.counter-strip');
-    if (!strip) return;
+    
+    // Если прелоадера на странице нет (например, на внутренних страницах), 
+    // сразу помечаем анимацию как завершенную и идем дальше.
+    if (!strip) {
+        isAnimationFinished = true;
+        checkAndReveal();
+        return;
+    }
     
     // Генерируем 100 цифр, знак процента только на сотне
     let numbersHTML = '';
@@ -26,21 +33,20 @@ function startCinematicPreloader() {
     }
     strip.innerHTML = numbersHTML;
 
-    // Запускаем GSAP таймлайн (только прокрутка до 100, без исчезновения)
+    // Запускаем GSAP таймлайн
     const tl = gsap.timeline({
         onComplete: () => {
             isAnimationFinished = true;
-            checkAndReveal(); // Проверяем, загрузился ли сайт к этому моменту
+            checkAndReveal();
         }
     });
 
-    // Плавная прокрутка до 100 (3.5 секунды)
+    // Плавная прокрутка до 100
     tl.to(strip, {
         y: "-100em", 
         duration: 3.5, 
         ease: "power4.inOut" 
     });
-    // ❌ Удаляем анимацию исчезновения .preloader-counter
 }
 
 // --- ЗАГРУЗКА ХЕДЕРА И ФУТЕРА ---
