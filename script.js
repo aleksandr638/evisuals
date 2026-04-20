@@ -1,14 +1,63 @@
+// --- ПРЕЛОАДЕР И ИНИЦИАЛИЗАЦИЯ САЙТА ---
+
+document.documentElement.classList.add('loading');
+
+let isSiteLoaded = false;
+let isAnimationFinished = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    startCinematicPreloader(); // Запускаем анимацию цифр
+    bootSite(); // Параллельно начинаем грузить файлы
+});
+
+// Анимация рулетки цифр
+function startCinematicPreloader() {
+    const strip = document.querySelector('.counter-strip');
+    if (!strip) return;
+    
+    // Генерируем 100 цифр, знак процента только на сотне
+    let numbersHTML = '';
+    for (let i = 0; i <= 100; i++) {
+        if (i === 100) {
+            numbersHTML += `<div class="number">${i}<span class="percent">%</span></div>`;
+        } else {
+            numbersHTML += `<div class="number">${i}</div>`;
+        }
+    }
+    strip.innerHTML = numbersHTML;
+
+    // Запускаем GSAP таймлайн
+    const tl = gsap.timeline({
+        onComplete: () => {
+            isAnimationFinished = true;
+            checkAndReveal(); // Проверяем, загрузился ли сайт к этому моменту
+        }
+    });
+
+    // Плавная прокрутка до 100 (занимает 3.5 секунды)
+    tl.to(strip, {
+        y: "-100em", 
+        duration: 3.5, 
+        ease: "power4.inOut" 
+    })
+    // Мягкое растворение цифры 100%
+    .to('.preloader-counter', {
+        y: -30, 
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out"
+    }, "+=0.2");
+}
+
 // --- ЗАГРУЗКА ХЕДЕРА И ФУТЕРА ---
 async function loadIncludes() {
     try {
-        // Загрузка Header
         const headerRes = await fetch('header.html');
         if (headerRes.ok) {
             const headerHtml = await headerRes.text();
             document.getElementById('header-placeholder').outerHTML = headerHtml;
         }
 
-        // Загрузка Footer
         const footerRes = await fetch('footer.html');
         if (footerRes.ok) {
             const footerHtml = await footerRes.text();
@@ -16,15 +65,56 @@ async function loadIncludes() {
         }
     } catch (error) {
         console.warn('Локальный запуск (file:///). Хедер и футер не подгружены.', error);
-    } finally {
-        // ВАЖНО: Запускаем анимации сайта ВСЕГДА, даже если была ошибка загрузки файлов
+    }
+}
+
+// --- ЛОГИКА ОЖИДАНИЯ ЗАГРУЗКИ ---
+async function bootSite() {
+    await loadIncludes();
+
+    await new Promise(resolve => {
+        if (document.readyState === 'complete') {
+            resolve();
+        } else {
+            window.addEventListener('load', resolve);
+        }
+    });
+
+    isSiteLoaded = true;
+    checkAndReveal(); // Сайт загрузился, проверяем не закончилась ли анимация
+}
+
+// --- ПРОВЕРКА И СКРЫТИЕ ПРЕЛОАДЕРА ---
+function checkAndReveal() {
+    // Ждем, пока ОБА условия будут выполнены (и файлы скачались, и 3.5 сек прошло)
+    if (isSiteLoaded && isAnimationFinished) {
+        hidePreloader();
+    }
+}
+
+function hidePreloader() {
+    const preloaderEl = document.getElementById('preloader');
+    if (preloaderEl && typeof gsap !== 'undefined') {
+        gsap.to(preloaderEl, {
+            clipPath: "inset(0 0 100% 0)", // Элегантная шторка вверх
+            duration: 1.2,
+            ease: "power3.inOut",
+            onComplete: () => {
+                preloaderEl.style.display = 'none';
+                document.documentElement.classList.remove('loading'); 
+                initApp(); // Запуск Lenis и скролл-анимаций
+            }
+        });
+    } else {
+        if(preloaderEl) preloaderEl.style.display = 'none';
+        document.documentElement.classList.remove('loading');
         initApp();
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadIncludes);
-
-// --- ВСЯ ОСТАЛЬНАЯ ЛОГИКА САЙТА ---
+// --- ВСЯ ОСТАЛЬНАЯ ЛОГИКА САЙТА (ЗАПУСКАЕТСЯ ПОСЛЕ ПРЕЛОАДЕРА) ---
+// ... (оставьте вашу функцию initApp() и код ниже без изменений)
+// --- ВСЯ ОСТАЛЬНАЯ ЛОГИКА САЙТА (ЗАПУСКАЕТСЯ ПОСЛЕ ПРЕЛОАДЕРА) ---
 function initApp() {
     
     // 0. Корректировка ссылок для главной страницы
@@ -211,43 +301,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxClose = document.getElementById('lightbox-close');
 
     if (galleryItems.length > 0 && lightbox) {
-        // Открытие фото
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
                 lightboxImg.src = item.src;
                 lightbox.classList.add('active');
                 
-                // Отключаем скролл страницы на фоне (учитывая Lenis)
                 document.documentElement.classList.add('lenis-stopped');
                 document.body.style.overflow = 'hidden';
             });
         });
 
-        // Функция закрытия
         const closeLightbox = () => {
             lightbox.classList.remove('active');
             
-            // Ждем завершения анимации затухания перед очисткой src
             setTimeout(() => {
                 lightboxImg.src = '';
             }, 400);
 
-            // Включаем скролл обратно
             document.documentElement.classList.remove('lenis-stopped');
             document.body.style.overflow = '';
         };
 
-        // Закрытие по крестику
         lightboxClose.addEventListener('click', closeLightbox);
 
-        // Закрытие по клику на темный фон
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 closeLightbox();
             }
         });
 
-        // Закрытие по клавише ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && lightbox.classList.contains('active')) {
                 closeLightbox();
@@ -256,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- ЛОГИКА ДЛЯ ВИДЕО ГАЛЕРЕИ (Play/Pause, только 1 видео одновременно) ---
+// --- ЛОГИКА ДЛЯ ВИДЕО ГАЛЕРЕИ (Play/Pause) ---
 document.addEventListener('DOMContentLoaded', () => {
     const customPlayers = document.querySelectorAll('.video-wrapper.custom-player');
 
@@ -264,13 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
         customPlayers.forEach(player => {
             const video = player.querySelector('video');
 
-            // Обработка клика по видео
             player.addEventListener('click', () => {
-                
-                // Если кликнутое видео было на паузе
                 if (video.paused) {
-                    
-                    // 1. Сначала ставим на паузу ВСЕ остальные видео
                     customPlayers.forEach(otherPlayer => {
                         if (otherPlayer !== player) {
                             const otherVideo = otherPlayer.querySelector('video');
@@ -279,24 +356,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
-                    // 2. Затем запускаем наше видео
                     video.play().then(() => {
                         player.classList.add('is-playing');
                     }).catch(err => console.log("Ошибка воспроизведения:", err));
                     
                 } else {
-                    // Если кликнули по видео, которое уже играет — ставим его на паузу
                     video.pause();
                     player.classList.remove('is-playing');
                 }
             });
 
-            // Когда видео заканчивается само (если не стоит loop), возвращаем кнопку Play
             video.addEventListener('ended', () => {
                 player.classList.remove('is-playing');
-                // Если хотите, чтобы видео зацикливалось, раскомментируйте следующие 2 строки:
-                // video.currentTime = 0; 
-                // video.play(); player.classList.add('is-playing');
             });
         });
     }

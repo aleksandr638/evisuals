@@ -512,3 +512,58 @@ header {
     .video-wrapper.custom-player { flex: 0 0 100%; max-width: 100%; }
     .video-gallery-flex { gap: 2rem; }
 }
+
+/* --- ПРЕЛОАДЕР --- */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--bg-white);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: inset(0 0 0 0); /* Для красивого эффекта шторки */
+    will-change: clip-path;
+}
+
+.preloader-counter {
+    /* Шрифт прелоадера. Если Clash Display не загрузится, включится Inter */
+    font-family: 'Clash Display', var(--font-main);
+    font-size: clamp(5rem, 15vw, 15rem); 
+    font-weight: 500; 
+    color: var(--accent-blue); /* Используем вашу переменную синего цвета */
+    letter-spacing: -0.03em; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+}
+
+.counter-mask {
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+}
+
+.counter-strip {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+}
+
+.number {
+    height: 1em;
+    line-height: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.percent {
+    margin-left: 0.02em; 
+}
+
+/* Блокировка скролла */
+html.loading, html.loading body {
+    overflow: hidden !important;
+}
